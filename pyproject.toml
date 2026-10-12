@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pdf-checker"
+version = "0.1.0"
+description = "Генерация PDF-чеков из CSV/JSON по HTML-шаблону"
+requires-python = ">=3.12"
+dependencies = [
+    "weasyprint>=62",
+    "jinja2>=3.1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff", "pypdf"]
+
+[project.scripts]
+pdf-checker = "pdf_checker.__main__:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
