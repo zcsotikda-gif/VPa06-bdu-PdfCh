@@ -86,5 +86,13 @@ https://doc.courtbouillon.org/weasyprint/stable/first_steps.html
 docker compose -f docker/compose.yaml up --build --abort-on-container-exit
 ```
 
+Последняя команда сама собирает образ `pdf-checker-tests` из `docker/Dockerfile`
+(`--build`), поэтому хранить его между прогонами не нужно. Убрать образ и
+контейнер после проверки:
+
+```
+docker compose -f docker/compose.yaml down --rmi local
+```
+
 Контейнер прогоняет тесты на Linux с Pango из Debian. Ветка открытия файла в
 Windows (`os.startfile`) покрыта тестом с подменой, но вживую не проверялась.
