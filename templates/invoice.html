@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Счёт {{ invoice.invoice_id }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 18mm;
+    @bottom-right { content: "Стр. " counter(page) " из " counter(pages); font-size: 8pt; color: #777; }
+  }
+  /* На html, а не body: поля страницы (номер внизу) наследуют от корня. */
+  html { font-family: "DejaVu Sans", sans-serif; }
+  body { font-size: 10pt; color: #1a1a1a; }
+  header { display: flex; justify-content: space-between; align-items: flex-end;
+           border-bottom: 2px solid #1a1a1a; padding-bottom: 4mm; margin-bottom: 8mm; }
+  h1 { font-size: 20pt; margin: 0; }
+  .meta { text-align: right; line-height: 1.5; }
+  .label { color: #666; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; font-weight: bold; border-bottom: 1px solid #1a1a1a; padding: 2mm 1.5mm; }
+  td { border-bottom: 1px solid #ddd; padding: 2mm 1.5mm; vertical-align: top; }
+  .num { text-align: right; white-space: nowrap; }
+  tfoot td { border-bottom: none; font-weight: bold; font-size: 12pt; padding-top: 4mm; }
+  footer { margin-top: 12mm; color: #777; font-size: 8pt; }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Счёт № {{ invoice.invoice_id }}</h1>
+    <div class="meta">
+      <span class="label">Дата:</span> {{ invoice.date }}<br>
+      <span class="label">Покупатель:</span> {{ invoice.customer }}
+    </div>
+  </header>
+  <table>
+    <thead>
+      <tr><th>№</th><th>Наименование</th><th class="num">Кол-во</th>
+          <th class="num">Цена, ₽</th><th class="num">Сумма, ₽</th></tr>
+    </thead>
+    <tbody>
+      {% for item in invoice.items %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ item.name }}</td>
+        <td class="num">{{ item.quantity | quantity }}</td>
+        <td class="num">{{ item.price | money }}</td>
+        <td class="num">{{ item.total | money }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr><td colspan="4" class="num">Итого:</td><td class="num">{{ invoice.total | money }}</td></tr>
+    </tfoot>
+  </table>
+  <footer>Документ сформирован {{ generated_at }}</footer>
+</body>
+</html>

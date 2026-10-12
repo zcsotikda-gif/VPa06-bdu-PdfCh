@@ -1,0 +1,7 @@
+name: pdf-checker
+
+services:
+  tests:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile

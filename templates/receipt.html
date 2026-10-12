@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Чек {{ invoice.invoice_id }}</title>
+<style>
+  @page { size: 80mm 200mm; margin: 6mm 5mm; }
+  html { font-family: "DejaVu Sans", sans-serif; }
+  body { font-size: 8.5pt; color: #111; }
+  h1 { font-size: 11pt; text-align: center; margin: 0 0 2mm; letter-spacing: 0.5pt; }
+  .meta { text-align: center; margin-bottom: 3mm; }
+  .rule { border-top: 1px dashed #555; margin: 2mm 0; }
+  .item { margin-bottom: 1.5mm; }
+  .item .name { font-weight: bold; }
+  .row { display: flex; justify-content: space-between; }
+  .total { font-size: 11pt; font-weight: bold; }
+  .foot { text-align: center; margin-top: 4mm; color: #555; font-size: 7pt; }
+</style>
+</head>
+<body>
+  <h1>КАССОВЫЙ ЧЕК</h1>
+  <div class="meta">
+    № {{ invoice.invoice_id }}<br>
+    {{ invoice.date }}<br>
+    Покупатель: {{ invoice.customer }}
+  </div>
+  <div class="rule"></div>
+  {% for item in invoice.items %}
+  <div class="item">
+    <div class="name">{{ item.name }}</div>
+    <div class="row">
+      <span>{{ item.quantity | quantity }} × {{ item.price | money }}</span>
+      <span>{{ item.total | money }}</span>
+    </div>
+  </div>
+  {% endfor %}
+  <div class="rule"></div>
+  <div class="row total">
+    <span>ИТОГО</span>
+    <span>{{ invoice.total | money }} ₽</span>
+  </div>
+  <div class="foot">Спасибо за покупку!<br>Сформировано {{ generated_at }}</div>
+</body>
+</html>
